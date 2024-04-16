@@ -1,0 +1,10 @@
+#!/usr/bin/bash
+
+if  [[ $2 = "reload" ]]; then
+    podman --url $POD_SOCK kill --signal=SIGHUP $1
+elif [[ $2 = "restart" ]]; then
+    podman --url $POD_SOCK restart $1
+else
+    echo "$2 is not a valide option" >> /dev/stderr
+fi
+

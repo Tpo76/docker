@@ -1,0 +1,9 @@
+a \\n############################ Docker Build added segment ############################ \
+my $pod_php_cmd = "sudo cat \/proc\/1\/environ 2> \/dev\/null | tr \x27\\\\0\x27 \x27\\\\n\x27 | grep POD_PHP | cut -d= -f2"; \
+my $pod_sock_cmd="sudo cat \/proc\/1\/environ 2> \/dev\/null | tr \x27\\\\0\x27 \x27\\\\n\x27 | grep POD_SOCK | cut -d= -f2";\n \
+my $POD_PHP=`$pod_php_cmd`; \
+my $POD_SOCK=`$pod_sock_cmd`;\n \
+$POD_PHP =~ s\/\\n\/\/g; \
+$POD_SOCK =~ s\/\\n\/\/g; \
+##############################################################################################\n
+

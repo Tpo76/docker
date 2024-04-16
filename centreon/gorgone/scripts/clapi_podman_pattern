@@ -1,0 +1,1 @@
+return \x27podman --url=\x27 . $POD_SOCK . \x27 exec \x27 . $POD_PHP . \x27 centreon

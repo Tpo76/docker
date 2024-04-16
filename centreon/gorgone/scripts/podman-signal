@@ -1,0 +1,13 @@
+#!/usr/bin/bash
+
+POD_ENGINE=`sudo cat /proc/1/environ | tr '\0' '\n' | grep POD_ENGINE | cut -d= -f2`
+POD_SOCK=`sudo cat /proc/1/environ | tr '\0' '\n' | grep POD_SOCK | cut -d= -f2`
+
+if  [[ $2 = "reload" ]]; then
+    podman --url $POD_SOCK kill --signal=SIGHUP $POD_ENGINE
+elif [[ $2 = "restart" ]]; then
+    podman --url $POD_SOCK restart $POD_ENGINE
+else
+    echo "$2 is not a valide option" >> /dev/stderr
+fi
+

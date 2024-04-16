@@ -1,0 +1,10 @@
+gorgone:
+  modules:
+    - name: mbietl
+      package: "gorgone::modules::centreon::mbi::etl::hooks"
+      enable: true
+
+    - name: mbietlworkers
+      package: "gorgone::modules::centreon::mbi::etlworkers::hooks"
+      enable: true
+

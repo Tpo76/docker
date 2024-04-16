@@ -1,0 +1,28 @@
+## BEGIN: CENTREON SUDO
+
+User_Alias      CENTREON=%centreon
+Defaults:CENTREON !requiretty
+
+# centreontrapd
+CENTREON   ALL = NOPASSWD: /usr/bin/service centreontrapd start
+CENTREON   ALL = NOPASSWD: /usr/bin/service centreontrapd stop
+CENTREON   ALL = NOPASSWD: /usr/bin/service centreontrapd restart
+CENTREON   ALL = NOPASSWD: /usr/bin/service centreontrapd reload
+
+# Centreon Engine
+CENTREON   ALL = NOPASSWD: /usr/bin/service centengine start
+CENTREON   ALL = NOPASSWD: /usr/bin/service centengine stop
+CENTREON   ALL = NOPASSWD: /usr/bin/service centengine restart
+CENTREON   ALL = NOPASSWD: /usr/bin/service centengine reload
+
+# Centreon Broker
+CENTREON   ALL = NOPASSWD: /usr/bin/service cbd start
+CENTREON   ALL = NOPASSWD: /usr/bin/service cbd stop
+CENTREON   ALL = NOPASSWD: /usr/bin/service cbd restart
+CENTREON   ALL = NOPASSWD: /usr/bin/service cbd reload
+
+#Centreon process environment
+CENTREON   ALL = NOPASSWD: /usr/bin/cat /proc/1/environ
+
+## END: CENTREON SUDO
+

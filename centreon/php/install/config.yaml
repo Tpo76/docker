@@ -1,0 +1,4 @@
+name: config.yaml
+description: Configuration brought by Centreon Gorgone package. SHOULD NOT BE EDITED! USE CONFIG.D DIRECTORY!
+configuration: !include /etc/centreon-gorgone/config.d/*.yaml
+
