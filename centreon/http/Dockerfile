@@ -1,9 +1,9 @@
 FROM docker.io/library/almalinux:8
 
 
-ARG TZ POD_PHP POD_ENGINE POD_SOCK
+ARG TZ
 
-ENV TZ=${TZ} POD_PHP=${POD_PHP} POD_ENGINE=${POD_ENGINE} POD_SOCK=${POD_SOCK}
+ENV TZ=${TZ}
 
 RUN dnf update -y && \
     dnf install -y httpd
@@ -11,8 +11,7 @@ RUN dnf update -y && \
 COPY 10-centreon.conf /etc/httpd/conf.d/
 
 RUN mkdir -p /var/log/centreon/symfony && \
-    chown apache. /var/log/centreon/symfony 
-#    printenv | grep POD | awk  '{print "export " $1}' > /etc/environment
+    chown apache. /var/log/centreon/symfony
 
 RUN dnf clean all && \
     rm -rf /var/cache/dnf

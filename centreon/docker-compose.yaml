@@ -1,11 +1,11 @@
-version: '3'
+# version: '3'
 
 x-common-variables: &common-variables
   TZ: America/Toronto
   POD_SOCK: unix:/tmp/podman.sock
   POD_ENGINE: centengine
   POD_PHP: php
-  SMTP_ADDR: <SMTP_ADDR:PORT>
+  SMTP_ADDR: 172.16.5.5:1025
   MYSQL_ROOT_PASSWORD: centreon
 
 volumes:
@@ -67,7 +67,7 @@ services:
       - centreon_net
     volumes:
       - centreon-var:/var/lib/centreon:z,rw
-      - broker-etc:/etc/centreon-broker:z,ro
+      - broker-etc:/etc/centreon-broker:z,rw
       - broker-log:/var/log/centreon-broker,rw
     # depends_on:
     #   - php
@@ -110,14 +110,14 @@ services:
     networks:
       - centreon_net
     volumes:
-      - centreon-etc:/etc/centreon/:z,ro
-      - centengine-etc:/etc/centreon-engine/:z,ro
+      - centreon-etc:/etc/centreon/:z,rw
+      - centengine-etc:/etc/centreon-engine/:z,rw
       - centplugin:/var/lib/centreon/centplugins/:z,ro
-      - broker-etc:/etc/centreon-broker:z,ro
+      - broker-etc:/etc/centreon-broker:z,rw
       - centengine-log:/var/log/centreon-engine/:z,rw
       - centengine-var:/var/lib/centreon-engine/:z,rw
       - centplugin:/usr/lib/centreon/plugins/:z,rw
-      - centreon-bin:/usr/local/share/applications/:z,ro
+      - centreon-bin:/usr/local/share/applications/:z,rw
       - centreon-cache:/var/cache/centreon/:z,rw
     depends_on:
       - php
@@ -145,7 +145,7 @@ services:
       args:
         <<: *common-variables
     image: tpo76/gorgone:23.10
-    command: ["/usr/bin/perl", "/usr/bin/gorgoned", "--config=/etc/centreon-gorgone/config.yaml", "--logfile=/dev/stdout", "--severity=debug"]
+    # command: ["/usr/bin/perl", "/usr/bin/gorgoned", "--config=/etc/centreon-gorgone/config.yaml", "--logfile=/dev/stdout", "--severity=debug"]
     container_name: gorgone
     hostname: gorgone
     restart: always

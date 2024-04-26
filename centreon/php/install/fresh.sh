@@ -12,10 +12,9 @@ su apache -s /bin/bash -c "SERVER_ADDR='127.0.0.1' php insertBaseConf.php"
 su apache -s /bin/bash -c "php partitionTables.php"
 su apache -s /bin/bash -c "php generationCache.php"
 su apache -s /bin/bash -c "ls /usr/share/centreon/www/widgets/ | grep -v -e '.php' -e '\.' -e centreon | xargs -I % sh -c 'php /tmp/install/configuration/install-centreon-widget.php -b /usr/share/centreon/bootstrap.php -w %'"
-#su apache -s /bin/bash -c "ls /usr/share/centreon/www/modules/ | grep -v '.html' | xargs -I % sh -c 'php /tmp/install/configuration/install-centreon-module.php -b /usr/share/centreon/bootstrap.php -m %'"
 su apache -s /bin/bash -c "php /tmp/install/configuration/install-centreon-module.php -b /usr/share/centreon/bootstrap.php -m centreon-license-manager"
 su apache -s /bin/bash -c "php /tmp/install/configuration/install-centreon-module.php -b /usr/share/centreon/bootstrap.php -m centreon-pp-manager"
-su apache -s /bin/bash -c "php /tmp/install/configuration/install-centreon-module.php -b /usr/share/centreon/bootstrap.php -m centreon-autodiscovery-server"
+# su apache -s /bin/bash -c "php /tmp/install/configuration/install-centreon-module.php -b /usr/share/centreon/bootstrap.php -m centreon-autodiscovery-server"
 # su apache -s /bin/bash -c 'php /tmp/install/configuration/install-centreon-module.php -b /usr/share/centreon/bootstrap.php -m centreon-bi-server'
 # su apache -s /bin/bash -c 'php /tmp/install/configuration/install-centreon-module.php -b /usr/share/centreon/bootstrap.php -m centreon-map4-web-client'
 # su apache -s /bin/bash -c 'php /tmp/install/configuration/install-centreon-module.php -b /usr/share/centreon/bootstrap.php -m centreon-bam-server'
@@ -44,14 +43,15 @@ mysql -p$DB_ROOT_PWD -h database $CENTREON_DB -N -s -r -e "update options set \`
 sed -i "s/127.0.0.1/apache/"  /etc/centreon-gorgone/config.d/31-centreon-api.yaml
 sed -i "s/- 127.0.0.1\/32$/- 127.0.0.1\/32\n          - $PHP_IP\/32/"  /etc/centreon-gorgone/config.d/40-gorgoned.yaml
 
-mkdir -p /etc/centreon/license.d/
+# mkdir -p /etc/centreon/license.d/
 
-chown -R centreon-engine. /etc/centreon-engine
-chown -R centreon-broker. /etc/centreon-broker
-chown -R centreon. /etc/centreon/
-chmod 775 /etc/centreon-broker
-chmod 775 /etc/centreon/license.d/
+# chown -R centreon-engine. /etc/centreon-engine
+# chown -R centreon-broker. /etc/centreon-broker
+# chown -R centreon. /etc/centreon/
+# chmod 775 /etc/centreon-broker
+# chmod 775 /etc/centreon/license.d/
 
 su apache -s /bin/bash -c "centreon -u $GORGONE_USR -p '$GORGONE_PWD' -a POLLERGENERATE -v 1"
+su apache -s /bin/bash -c "centreon -u $GORGONE_USR -p '$GORGONE_PWD' -a CFGMOVE -v 1"
 
 rm -rf /usr/share/centreon/www/install
