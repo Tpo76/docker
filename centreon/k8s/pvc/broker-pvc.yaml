@@ -1,0 +1,24 @@
+# broker-etc
+# broker-log
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: broker-etc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Mi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: broker-log
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Mi

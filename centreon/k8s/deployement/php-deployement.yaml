@@ -1,0 +1,114 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: php
+spec:
+  selector:
+    app: php
+  ports:
+    - protocol: TCP
+      port: 9042
+      targetPort: 9042
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: php
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: php
+  template:
+    metadata:
+      labels:
+        app: php
+    spec:
+      containers:
+        - name: php
+          image: tpo76/php-fpm:23.10.11
+          resources: {}
+          env:
+          - name: TZ
+            valueFrom:
+              configMapKeyRef:
+                name: global-config
+                key: TZ
+          ports:
+            - containerPort: 9042
+          volumeMounts:
+            - name: php-config
+              mountPath: /app/
+            - name: centreon-etc
+              mountPath: /etc/centreon
+            - name: centreon-share
+              mountPath: /usr/share/centreon
+            - name: centreon-img
+              mountPath: /usr/share/centreon/www/img/media
+            - name: centreon-var
+              mountPath: /var/lib/centreon
+            - name: centreon-cache
+              mountPath: /var/cache/centreon
+            - name: centreon-pack
+              mountPath: /usr/share/centreon-packs
+            - name: centreon-centplugin
+              mountPath: /var/lib/centreon/centplugins
+            - name: broker-etc
+              mountPath: /etc/centreon-broker
+            - name: broker-log
+              mountPath: /var/log/centreon-broker
+            - name: centengine-etc
+              mountPath: /etc/centreon-engine
+            - name: centreon-bin
+              mountPath: /usr/local/share/applications
+            - name: gorgone-cache
+              mountPath: /var/cache/centreon-gorgone
+            - name: gorgone-etc
+              mountPath: /etc/centreon-gorgone
+      volumes:
+        - name: php-config
+          configMap:
+            name: php-config
+        - name: centreon-etc
+          persistentVolumeClaim:
+            claimName: centreon-etc
+        - name: centreon-share
+          persistentVolumeClaim:
+            claimName: centreon-share
+        - name: centreon-img
+          persistentVolumeClaim:
+            claimName: centreon-img
+        - name: centreon-var
+          persistentVolumeClaim:
+            claimName: centreon-var
+        - name: centreon-cache
+          persistentVolumeClaim:
+            claimName: centreon-cache
+        - name: centreon-pack
+          persistentVolumeClaim:
+            claimName: centreon-pack
+        - name: centreon-centplugin
+          persistentVolumeClaim:
+            claimName: centreon-centplugin
+        - name: broker-etc
+          persistentVolumeClaim:
+            claimName: broker-etc
+        - name: broker-log
+          persistentVolumeClaim:
+            claimName: broker-log
+            readOnly: true
+        - name: centengine-etc
+          persistentVolumeClaim:
+            claimName: centengine-etc
+        - name: centreon-bin
+          persistentVolumeClaim:
+            claimName: centreon-bin
+            readOnly: true
+        - name: gorgone-cache
+          persistentVolumeClaim:
+            claimName: gorgone-cache
+            readOnly: true
+        - name: gorgone-etc
+          persistentVolumeClaim:
+            claimName: gorgone-etc

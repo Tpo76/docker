@@ -1,0 +1,26 @@
+kind: Kustomization
+
+resources:
+- configMap/mariadb-config.yaml
+- configMap/apache-config.yaml
+- configMap/php-config.yaml
+- configMap/global-config.yaml
+- configMap/mysql-secret.yaml
+- configMap/smtp-config.yaml
+- pvc/broker-pvc.yaml
+- pvc/centengine-pvc.yaml
+- pvc/centreon-pvc.yaml
+- pvc/database-pvc.yaml
+- pvc/gorgone-pvc.yaml
+- deployement/apache-deployement.yaml
+- deployement/cbd-deployement.yaml
+- deployement/centengine-deployement.yaml
+- deployement/database-deployement.yaml
+- deployement/gorgone-deployement.yaml
+- deployement/php-deployement.yaml
+- cronjob/downtime-centreon.yaml
+- cronjob/centacl.yaml
+- cronjob/build-event.yaml
+- cronjob/build-reporting.yaml
+- cronjob/centreon-partitioning.yaml
+- cronjob/centstorage-purge.yaml

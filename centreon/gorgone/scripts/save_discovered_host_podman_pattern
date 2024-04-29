@@ -1,3 +1,0 @@
-POD_PHP=`sudo cat \/proc\/1\/environ | tr \x27\\0\x27 \x27\\n\x27 | grep POD_PHP | cut -d= -f2` \nPOD_SOCK=`sudo cat \/proc\/1\/environ | tr \x27\\0\x27 \x27\\n\x27 | grep POD_SOCK | cut -d= -f2` \n \
-podman --url $POD_SOCK exec --user apache $POD_PHP \/usr\/bin\/php
-

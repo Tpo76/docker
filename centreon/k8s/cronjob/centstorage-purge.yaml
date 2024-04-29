@@ -1,0 +1,32 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: centstorage-purge
+spec:
+  schedule: "0 4 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: centstorage-purge
+            image: php:8.1.28-cli
+            command: ["/usr/bin/php", "/usr/share/centreon/cron/centstorage_purge.php"]
+            volumeMounts:
+            - name: centreon-share
+              mountPath: /usr/share/centreon
+            - name: centreon-etc
+              mountPath: /etc/centreon
+            # Add other volume mounts as needed
+          restartPolicy: OnFailure
+          volumes:
+          - name: centreon-share
+            persistentVolumeClaim:
+              claimName: centreon-share
+              readOnly: true
+          - name: centreon-etc
+            persistentVolumeClaim:
+              claimName: centreon-etc
+              readOnly: true
+          # serviceAccountName: centreon-user
+      backoffLimit: 3

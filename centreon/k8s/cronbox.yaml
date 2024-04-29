@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cronbox
+spec:
+  volumes:
+  - name: centreon-share
+    persistentVolumeClaim:
+      claimName: centreon-share
+      readOnly: true
+  - name: centreon-etc
+    persistentVolumeClaim:
+      claimName: centreon-etc
+      readOnly: true
+  - name: centreon-var
+    persistentVolumeClaim:
+      claimName: centreon-var
+  containers:
+    - name: cronbox
+      image: tpo76/cronbox:23.10.11
+      resources: {}
+      # command: ["php", "-q", "/usr/share/centreon/cron/centAcl.php"]
+      command: ["sleep","1d"]
+      volumeMounts:
+      - name: centreon-share
+        mountPath: /usr/share/centreon/
+      - name: centreon-etc
+        mountPath: /etc/centreon
+      - name: centreon-var
+        mountPath: /var/lib/centreon
+      # Add other volume mounts as needed
+    # serviceAccountName: centreon-user

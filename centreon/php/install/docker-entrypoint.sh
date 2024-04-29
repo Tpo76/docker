@@ -2,19 +2,6 @@
 
 set -x
 
-
-# mkdir -p /etc/centreon-gorgone/config.d/
-# # mkdir -p /etc/centreon/license.d/
-# cp /tmp/install/config.yaml /etc/centreon-gorgone/config.yaml
-
-touch /var/log/centreon/centreon-web.log
-
-# chmod 775 /etc/centreon-broker
-chmod 1230 /var/log/centreon/centreon-web.log
-chown apache. /var/log/centreon/centreon-web.log
-# chown -R centreon-gorgone. /etc/centreon-gorgone/
-# chown centreon-broker. /etc/centreon-broker
-
 echo "Waiting for database init..."
     while : ; do
         RET=$(mysql -p${MYSQL_ROOT_PASSWORD} -h database information_schema -N -s -r -e "select count(*) from information_schema.SCHEMATA;")
@@ -30,7 +17,7 @@ EXEC=$?
 
 if [ $EXEC = 0 ] &&  [ $RET != 0 ]; then
 	echo "Centreon $RET detected"
-    rpm -Uvh --nodeps centreon-common*.rpm centreon-perl-libs*.rpm centreon-poller*.rpm centreon-web*.rpm centreon-widget*.rpm centreon-license-manager-common*.rpm centreon-license-manager*.rpm centreon-auto-discovery-server*.rpm centreon-pp-manager*.rpm
+    rpm -ivh --nodeps centreon-common*.rpm centreon-perl-libs*.rpm centreon-poller*.rpm centreon-web*.rpm centreon-widget*.rpm centreon-license-manager-common*.rpm centreon-license-manager*.rpm centreon-auto-discovery-server*.rpm centreon-pp-manager*.rpm
     if [ -d /usr/share/centreon/www/install/ ]; then
         mv /usr/share/centreon/www/install/ /var/lib/centreon/installs/install-$(date +%Y%m%d_%H%M%S)-$(shuf -i1-1000000 -n1)
     fi
@@ -43,7 +30,13 @@ else
     /tmp/install/fresh.sh
 fi
 
+su apache -s /bin/bash -c "touch /var/log/centreon/centreon-web.log"
+su apache -s /bin/bash -c "touch /etc/centreon-engine/plugins.json"
+chmod 1230 /var/log/centreon/centreon-web.log
+su - apache -s /bin/bash -c "/usr/share/centreon/bin/console cache:clear"
+
 rm -f *.rpm
+rm -rf /tmp/install/
 unset MYSQL_ROOT_PASSWORD
 
 exec "$@"

@@ -1,0 +1,96 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: gorgone
+spec:
+  selector:
+    app: gorgone
+  ports:
+    - protocol: TCP
+      port: 8085
+      targetPort: 8085
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gorgone
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gorgone
+  template:
+    metadata:
+      labels:
+        app: gorgone
+    spec:
+      containers:
+        - name: gorgone
+          image: tpo76/gorgone:23.10
+          resources: {}
+          env:
+          - name: TZ
+            valueFrom:
+              configMapKeyRef:
+                name: global-config
+                key: TZ
+          ports:
+            - containerPort: 8085
+          volumeMounts:
+            - name: centreon-etc
+              mountPath: /etc/centreon
+            - name: centreon-var
+              mountPath: /var/lib/centreon
+            - name: centreon-cache
+              mountPath: /var/cache/centreon
+            - name: centreon-bin
+              mountPath: /usr/local/share/applications
+            - name: centengine-etc
+              mountPath: /etc/centreon-engine
+            - name: broker-etc
+              mountPath: /etc/centreon-broker
+            - name: centengine-log
+              mountPath: /var/log/centreon-engine
+            - name: gorgone-etc
+              mountPath: /etc/centreon-gorgone
+            - name: gorgone-cache
+              mountPath: /var/cache/centreon-gorgone
+            - name: gorgone-var
+              mountPath: /var/lib/centreon-gorgone
+            - name: centengine-var
+              mountPath: /var/lib/centreon-engine
+      volumes:
+        - name: centreon-etc
+          persistentVolumeClaim:
+            claimName: centreon-etc
+        - name: centreon-var
+          persistentVolumeClaim:
+            claimName: centreon-var
+        - name: centreon-cache
+          persistentVolumeClaim:
+            claimName: centreon-cache
+        - name: centreon-bin
+          persistentVolumeClaim:
+            claimName: centreon-bin
+        - name: centengine-etc
+          persistentVolumeClaim:
+            claimName: centengine-etc
+        - name: broker-etc
+          persistentVolumeClaim:
+            claimName: broker-etc
+        - name: centengine-log
+          persistentVolumeClaim:
+            claimName: centengine-log
+            readOnly: true
+        - name: gorgone-etc
+          persistentVolumeClaim:
+            claimName: gorgone-etc
+        - name: gorgone-cache
+          persistentVolumeClaim:
+            claimName: gorgone-cache
+        - name: gorgone-var
+          persistentVolumeClaim:
+            claimName: gorgone-var
+        - name: centengine-var
+          persistentVolumeClaim:
+            claimName: centengine-var

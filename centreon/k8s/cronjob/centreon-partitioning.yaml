@@ -1,0 +1,32 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: centreon-partitioning
+spec:
+  schedule: "0 2 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: centreon-partitioning
+            image: tpo76/cronbox:23.10.11
+            command: ["/usr/bin/php", "/usr/share/centreon/cron/centreon-partitioning.php"]
+            volumeMounts:
+            - name: centreon-share
+              mountPath: /usr/share/centreon
+            - name: centreon-etc 
+              mountPath: /etc/centreon
+            # Add other volume mounts as needed
+          restartPolicy: OnFailure
+          volumes:
+          - name: centreon-share
+            persistentVolumeClaim:
+              claimName: centreon-share
+              readOnly: true
+          - name: centreon-etc
+            persistentVolumeClaim:
+              claimName: centreon-etc
+              readOnly: true
+          # serviceAccountName: centreon-user
+      backoffLimit: 3

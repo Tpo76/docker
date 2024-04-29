@@ -1,11 +1,6 @@
-# version: '3'
-
 x-common-variables: &common-variables
   TZ: America/Toronto
-  POD_SOCK: unix:/tmp/podman.sock
-  POD_ENGINE: centengine
-  POD_PHP: php
-  SMTP_ADDR: 172.16.5.5:1025
+  SMTP_ADDR: <SMTP_ADDR:PORT>
   MYSQL_ROOT_PASSWORD: centreon
 
 volumes:
@@ -41,6 +36,8 @@ volumes:
     name: centreon-bin
   centplugin:
     name: centplugin
+  centreon-pack:
+    name: centreon-pack
 
 networks:
   centreon_net:
@@ -76,7 +73,7 @@ services:
       context: php
       args:
         <<: *common-variables
-    image: tpo76/php-fpm:23.10
+    image: tpo76/php-fpm:23.10.11
     container_name: php
     hostname: php
     restart: always
@@ -88,14 +85,14 @@ services:
       - centreon-img:/usr/share/centreon/www/img/media/:z,rw
       - centreon-var:/var/lib/centreon:z,rw
       - centreon-cache:/var/cache/centreon/:z,rw
+      - centreon-pack:/usr/share/centreon-packs/:rw
+      - centplugin:/var/lib/centreon/centplugins/:z,rw
       - broker-etc:/etc/centreon-broker:z,rw
       - broker-log:/var/log/centreon-broker:z,ro
       - centengine-etc:/etc/centreon-engine/:z,rw
       - centreon-bin:/usr/local/share/applications/:z,ro
       - gorgone-cache:/var/cache/centreon-gorgone:z,ro
       - gorgone-etc:/etc/centreon-gorgone:z,rw
-      - /var/run/podman/podman.sock:/tmp/podman.sock
-      # - ./centengine-plugin:/usr/lib/centreon/plugins/:z,rw
     depends_on:
       - database
   centengine:
@@ -112,11 +109,10 @@ services:
     volumes:
       - centreon-etc:/etc/centreon/:z,rw
       - centengine-etc:/etc/centreon-engine/:z,rw
-      - centplugin:/var/lib/centreon/centplugins/:z,ro
+      - centplugin:/var/lib/centreon/centplugins/:z,rw
       - broker-etc:/etc/centreon-broker:z,rw
       - centengine-log:/var/log/centreon-engine/:z,rw
       - centengine-var:/var/lib/centreon-engine/:z,rw
-      - centplugin:/usr/lib/centreon/plugins/:z,rw
       - centreon-bin:/usr/local/share/applications/:z,rw
       - centreon-cache:/var/cache/centreon/:z,rw
     depends_on:
@@ -126,7 +122,7 @@ services:
       context: http
       args:
         <<: *common-variables
-    image: tpo76/apache:23.10
+    image: tpo76/apache:23.10.11
     container_name: apache
     hostname: apache
     restart: always
@@ -145,7 +141,6 @@ services:
       args:
         <<: *common-variables
     image: tpo76/gorgone:23.10
-    # command: ["/usr/bin/perl", "/usr/bin/gorgoned", "--config=/etc/centreon-gorgone/config.yaml", "--logfile=/dev/stdout", "--severity=debug"]
     container_name: gorgone
     hostname: gorgone
     restart: always
@@ -155,14 +150,14 @@ services:
       - centreon-etc:/etc/centreon:z,ro
       - centreon-var:/var/lib/centreon:z,rw
       - centreon-cache:/var/cache/centreon/:z,rw
+      - centreon-bin:/usr/local/share/applications/:z,rw
       - centengine-etc:/etc/centreon-engine/:z,rw
+      - broker-etc:/etc/centreon-broker:z,rw
       - centengine-log:/var/log/centreon-engine/:z,ro
       - gorgone-etc:/etc/centreon-gorgone:z,rw
       - gorgone-cache:/var/cache/centreon-gorgone:z,rw
       - gorgone-var:/var/lib/centreon-gorgone/:z,rw
-      - centengine-var:/var/lib/centreon-engine/:z,ro
-      - centplugin:/var/lib/centreon/centplugins/:z,rw
-      - /var/run/podman/podman.sock:/tmp/podman.sock
+      - centengine-var:/var/lib/centreon-engine/:z,rw
     depends_on:
       - php
   database:

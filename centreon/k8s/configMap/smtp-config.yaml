@@ -1,0 +1,8 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: smtp-config
+data: 
+ esmtprc: |
+    mda "procmail -d %T"
+    hostname = 172.16.5.5:1025

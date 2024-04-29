@@ -1,0 +1,32 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: build-reporting
+spec:
+  schedule: "0 6 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: build-reporting
+            image: tpo76/cronbox:23.10.11
+            command: ["/usr/share/centreon/cron/dashboardBuilder", "--config=/etc/centreon/conf.pm"]
+            volumeMounts:
+            - name: centreon-share
+              mountPath: /usr/share/centreon
+            - name: centreon-etc
+              mountPath: /etc/centreon
+            # Add other volume mounts as needed
+          restartPolicy: OnFailure
+          volumes:
+          - name: centreon-share
+            persistentVolumeClaim:
+              claimName: centreon-share
+              readOnly: true
+          - name: centreon-etc
+            persistentVolumeClaim:
+              claimName: centreon-etc
+              readOnly: true
+          # serviceAccountName: centreon-user
+      backoffLimit: 3

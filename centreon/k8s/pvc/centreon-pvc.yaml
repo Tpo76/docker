@@ -1,0 +1,99 @@
+## Volume section to claim
+# centreon-share
+# centreon-img
+# centreon-etc
+# centreon-var
+# centreon-cache
+# centreon-bin
+# centreon-centplugin
+# centreon-pack
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: centreon-share
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 500Mi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: centreon-img
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 20Mi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: centreon-etc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Mi
+---
+### Graph Volume CHECK SIZE
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: centreon-var
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Mi
+  
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: centreon-cache
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Mi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: centreon-bin
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Mi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: centreon-centplugin
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Mi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: centreon-pack
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Mi

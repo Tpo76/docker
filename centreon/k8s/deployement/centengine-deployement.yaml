@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: centengine
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: centengine
+  template:
+    metadata:
+      labels:
+        app: centengine
+    spec:
+      containers:
+        - name: centengine
+          image: tpo76/centengine:23.10
+          resources: {}
+          env:
+          - name: TZ
+            valueFrom:
+              configMapKeyRef:
+                name: global-config
+                key: TZ
+          volumeMounts:
+            - name: centreon-etc
+              mountPath: /etc/centreon
+            - name: centengine-etc
+              mountPath: /etc/centreon-engine
+            - name: centreon-centplugin
+              mountPath: /var/lib/centreon/centplugins
+            - name: broker-etc
+              mountPath: /etc/centreon-broker
+            - name: centengine-log
+              mountPath: /var/log/centreon-engine
+            - name: centengine-var
+              mountPath: /var/lib/centreon-engine
+            - name: centreon-bin
+              mountPath: /usr/local/share/applications
+            - name: centreon-cache
+              mountPath: /var/cache/centreon
+      volumes:
+        - name: centreon-etc
+          persistentVolumeClaim:
+            claimName: centreon-etc
+        - name: centengine-etc
+          persistentVolumeClaim:
+            claimName: centengine-etc
+        - name: centreon-centplugin
+          persistentVolumeClaim:
+            claimName: centreon-centplugin
+        - name: broker-etc
+          persistentVolumeClaim:
+            claimName: broker-etc
+        - name: centengine-log
+          persistentVolumeClaim:
+            claimName: centengine-log
+        - name: centengine-var
+          persistentVolumeClaim:
+            claimName: centengine-var
+        - name: centreon-bin
+          persistentVolumeClaim:
+            claimName: centreon-bin
+        - name: centreon-cache
+          persistentVolumeClaim:
+            claimName: centreon-cache

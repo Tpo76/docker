@@ -1,0 +1,33 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: centacl
+spec:
+  schedule: "* * * * *"
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: centacl
+            image: tpo76/cronbox:23.10.11
+            command: ["/usr/bin/php", "-q", "/usr/share/centreon/cron/centAcl.php"]
+            volumeMounts:
+            - name: centreon-share
+              mountPath: /usr/share/centreon/
+            - name: centreon-etc
+              mountPath: /etc/centreon
+            # Add other volume mounts as needed
+          restartPolicy: OnFailure
+          # serviceAccountName: centreon-user
+          volumes:
+          - name: centreon-share
+            persistentVolumeClaim:
+              claimName: centreon-share
+              readOnly: true
+          - name: centreon-etc
+            persistentVolumeClaim:
+              claimName: centreon-etc
+              readOnly: true
+      backoffLimit: 3

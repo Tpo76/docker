@@ -28,20 +28,23 @@ CENTSTORAGE_DB=$(grep mysql_database_ods /etc/centreon/conf.pm | cut -d\" -f2)
 GORGONE_USR=$(grep username /etc/centreon-gorgone/config.d/31-centreon-api.yaml | cut -d\" -f2| head -n 1)
 GORGONE_PWD=$(grep password /etc/centreon-gorgone/config.d/31-centreon-api.yaml | cut -d\" -f2 | head -n 1)
 
-PHP_IP=$(mysql -p$DB_ROOT_PWD -h database mysql -N -s -r -e 'select host from user where user = "centreon"')
-CBD_IP=$(dig cbd +short)
-GORGONE_IP=$(dig gorgone +short)
+# PHP_IP=$(nslookup -querytype=A php | grep -oE 'Address: ([0-9]{1,3}\.){3}[0-9]{1,3}' | awk '{print $2}')
+# CBD_IP=$(nslookup -querytype=A cbd | grep -oE 'Address: ([0-9]{1,3}\.){3}[0-9]{1,3}' | awk '{print $2}')
+# GORGONE_IP=$(nslookup -querytype=A gorgone | grep -oE 'Address: ([0-9]{1,3}\.){3}[0-9]{1,3}' | awk '{print $2}')
+# PHP_IP=php
+# CBD_IP=cbd
+# GORGONE_IP=gorgone
 
 # mysql -p$DB_ROOT_PWD -h database -N -s -r -e "RENAME USER 'centreon'@'$PHP_IP' TO 'centreon'@'php'"
-mysql -p$DB_ROOT_PWD -h database -N -s -r -e "GRANT ALL PRIVILEGES on $CENTREON_DB.* to '$DB_USER'@'$CBD_IP' identified by '$DB_PASSWORD'"
-mysql -p$DB_ROOT_PWD -h database -N -s -r -e "GRANT ALL PRIVILEGES on $CENTSTORAGE_DB.* to '$DB_USER'@'$CBD_IP' identified by '$DB_PASSWORD'"
-mysql -p$DB_ROOT_PWD -h database -N -s -r -e "GRANT ALL PRIVILEGES on $CENTREON_DB.* to '$DB_USER'@'$GORGONE_IP' identified by '$DB_PASSWORD'"
-mysql -p$DB_ROOT_PWD -h database -N -s -r -e "GRANT ALL PRIVILEGES on $CENTSTORAGE_DB.* to '$DB_USER'@'$GORGONE_IP' identified by '$DB_PASSWORD'"
+mysql -p$DB_ROOT_PWD -h database -N -s -r -e "GRANT ALL PRIVILEGES on $CENTREON_DB.* to '$DB_USER'@'%' identified by '$DB_PASSWORD'"
+mysql -p$DB_ROOT_PWD -h database -N -s -r -e "GRANT ALL PRIVILEGES on $CENTSTORAGE_DB.* to '$DB_USER'@'%' identified by '$DB_PASSWORD'"
+# mysql -p$DB_ROOT_PWD -h database -N -s -r -e "GRANT ALL PRIVILEGES on $CENTREON_DB.* to '$DB_USER'@'$GORGONE_IP' identified by '$DB_PASSWORD'"
+# mysql -p$DB_ROOT_PWD -h database -N -s -r -e "GRANT ALL PRIVILEGES on $CENTSTORAGE_DB.* to '$DB_USER'@'$GORGONE_IP' identified by '$DB_PASSWORD'"
 mysql -p$DB_ROOT_PWD -h database $CENTREON_DB -N -s -r -e "update cfg_centreonbroker_info set config_value='cbd' where config_id in (select config_id from cfg_centreonbroker_info where config_value = 'central-module-master-output') and config_key = 'host'"
 mysql -p$DB_ROOT_PWD -h database $CENTREON_DB -N -s -r -e "update options set \`value\`='gorgone' where \`key\`='gorgone_api_address'"
 
 sed -i "s/127.0.0.1/apache/"  /etc/centreon-gorgone/config.d/31-centreon-api.yaml
-sed -i "s/- 127.0.0.1\/32$/- 127.0.0.1\/32\n          - $PHP_IP\/32/"  /etc/centreon-gorgone/config.d/40-gorgoned.yaml
+sed -i "s/- 127.0.0.1\/32$/- 0.0.0.0\/0/"  /etc/centreon-gorgone/config.d/40-gorgoned.yaml
 
 # mkdir -p /etc/centreon/license.d/
 
@@ -51,7 +54,6 @@ sed -i "s/- 127.0.0.1\/32$/- 127.0.0.1\/32\n          - $PHP_IP\/32/"  /etc/cent
 # chmod 775 /etc/centreon-broker
 # chmod 775 /etc/centreon/license.d/
 
-su apache -s /bin/bash -c "centreon -u $GORGONE_USR -p '$GORGONE_PWD' -a POLLERGENERATE -v 1"
-su apache -s /bin/bash -c "centreon -u $GORGONE_USR -p '$GORGONE_PWD' -a CFGMOVE -v 1"
+su apache -s /bin/bash -c "centreon -u $GORGONE_USR -p '$GORGONE_PWD' -a POLLERRESTART -v 1"
 
 rm -rf /usr/share/centreon/www/install

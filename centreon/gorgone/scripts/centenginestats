@@ -1,7 +1,0 @@
-#!/usr/bin/bash
-
-POD_ENGINE=`sudo cat /proc/1/environ 2> /dev/null | tr '\0' '\n' | grep POD_ENGINE | cut -d= -f2`
-POD_SOCK=`sudo cat /proc/1/environ 2> /dev/null | tr '\0' '\n' | grep POD_SOCK | cut -d= -f2`
-
-podman --url $POD_SOCK exec $POD_ENGINE /usr/sbin/centenginestats $*
-

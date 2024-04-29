@@ -37,9 +37,9 @@ RUN dnf update -y && \
 
 ### Pack installation can be comment if not needed
 RUN dnf config-manager --add-repo https://packages.centreon.com/rpm-connectors/2e83f5ff110c44a9cab8f8c7ebbe3c4f/el8/centreon-connectors.repo
-    # dnf install -y centreon-pack\* --nogpgcheck 
 
 COPY install /tmp/install/
+COPY app/ /app
 
 RUN groupadd -g 6000 centreon && \
     useradd -u 6000 -g centreon -m -r -d /var/spool/centreon -c "Centreon" -s /bin/bash centreon && \
@@ -51,9 +51,9 @@ RUN groupadd -g 6000 centreon && \
     useradd -u 6003 -g centreon-gorgone -m -r -d /var/lib/centreon-gorgone -c "Centreon Gorgone"  -s /bin/bash centreon-gorgone && \
     usermod -aG centreon apache
 
-RUN cp /tmp/install/supervisord.conf /etc/supervisord.d/supervisord.conf && \
-    mkdir /run/php-fpm/ && \
-    cp /tmp/install/centreon.conf /etc/php-fpm.d/centreon.conf && \
+RUN mkdir /run/php-fpm/ && \
+    ln -nsf /app/supervisord.conf /etc/supervisord.d/supervisord.conf && \
+    ln -nsf /app/centreon.conf /etc/php-fpm.d/centreon.conf && \
     cp /tmp/install/config-reloader.sh /usr/local/bin/ && \
     cp /tmp/install/docker-entrypoint.sh /usr/local/bin/ && \
     ln -nsf /usr/local/share/applications/centengine /usr/sbin/ && \
@@ -68,4 +68,3 @@ RUN dnf clean all && \
 ENTRYPOINT ["docker-entrypoint.sh"]
 
 CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisord.d/supervisord.conf"]
-# CMD ["bash", "-c", "/usr/sbin/php-fpm --nodaemonize"]

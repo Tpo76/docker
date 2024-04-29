@@ -1,0 +1,35 @@
+# centengine-etc
+# centengine-log
+# centengine-var
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: centengine-etc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Mi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: centengine-log
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 150Mi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: centengine-var
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Mi

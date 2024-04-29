@@ -1,0 +1,37 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: downtime-centreon
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: downtime-centreon
+            image: tpo76/cronbox:23.10.11
+            command: ["/usr/bin/php", "-q", "/usr/share/centreon/cron/downtimeManager.php"]
+            volumeMounts:
+            - name: centreon-share
+              mountPath: /usr/share/centreon
+            - name: centreon-etc
+              mountPath: /etc/centreon
+            - name: centreon-var
+              mountPath: /var/lib/centreon
+            # Add other volume mounts as needed
+          restartPolicy: OnFailure
+          volumes:
+          - name: centreon-share
+            persistentVolumeClaim:
+              claimName: centreon-share
+              readOnly: true
+          - name: centreon-etc
+            persistentVolumeClaim:
+              claimName: centreon-etc
+              readOnly: true
+          - name: centreon-var
+            persistentVolumeClaim:
+              claimName: centreon-var
+          # serviceAccountName: centreon-user
+      backoffLimit: 3
