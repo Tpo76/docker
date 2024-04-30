@@ -9,6 +9,9 @@ rpm -ivh --nodeps centreon-gorgone-centreon-config*.rpm centreon-common*.rpm cen
 cp /usr/local/bin/gorgone_install_plugins.pl /usr/local/share/applications/
 
 su centreon-gorgone -s /bin/bash -c "touch /var/cache/centreon-gorgone/disco"
+su centreon-engine -s /bin/bash -c "touch /etc/centreon-engine/signal"
+su centreon-gorgone -s /bin/bash -c "echo 'restart' > /etc/centreon-engine/signal"
+
 rm -f *.rpm
 
 exec "$@"

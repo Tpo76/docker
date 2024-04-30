@@ -1,0 +1,35 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: apache-ingress
+  namespace: default
+  annotations:
+    nginx.ingress.kubernetes.io/error-pages: |
+      503: /centreon/install/
+  labels:
+    app: centreon
+spec:
+  ingressClassName: nginx
+  defaultBackend:
+    service:
+      name: apache
+      port:
+        number: 80
+  rules:
+  - host: apache
+    http:
+      paths:
+      - path: /centreon
+        pathType: Prefix
+        backend:
+          service:
+            name: apache
+            port:
+              number: 80
+      - path: /centreon/install/
+        pathType: Prefix
+        backend:
+          service:
+            name: maintenance
+            port:
+              number: 80

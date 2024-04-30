@@ -1,5 +1,9 @@
 FROM almalinux:8
 
+ARG TZ
+
+ENV TZ=${TZ}
+
 RUN dnf install -y https://rpms.remirepo.net/enterprise/remi-release-8.rpm -y && \
     dnf install -y dnf-plugins-core && \
     dnf config-manager --add-repo https://packages.centreon.com/rpm-standard/23.10/el8/centreon-23.10.repo && \

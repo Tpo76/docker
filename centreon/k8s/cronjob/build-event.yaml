@@ -11,6 +11,12 @@ spec:
           containers:
           - name: build-event
             image: tpo76/cronbox:23.10.11
+            env:
+              - name: TZ
+                valueFrom:
+                  configMapKeyRef:
+                    name: global-config
+                    key: TZ
             command: ["/usr/share/centreon/cron/eventReportBuilder", "--config=/etc/centreon/conf.pm"]
             volumeMounts:
             - name: centreon-share

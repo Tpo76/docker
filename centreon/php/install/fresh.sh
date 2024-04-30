@@ -14,7 +14,7 @@ su apache -s /bin/bash -c "php generationCache.php"
 su apache -s /bin/bash -c "ls /usr/share/centreon/www/widgets/ | grep -v -e '.php' -e '\.' -e centreon | xargs -I % sh -c 'php /tmp/install/configuration/install-centreon-widget.php -b /usr/share/centreon/bootstrap.php -w %'"
 su apache -s /bin/bash -c "php /tmp/install/configuration/install-centreon-module.php -b /usr/share/centreon/bootstrap.php -m centreon-license-manager"
 su apache -s /bin/bash -c "php /tmp/install/configuration/install-centreon-module.php -b /usr/share/centreon/bootstrap.php -m centreon-pp-manager"
-# su apache -s /bin/bash -c "php /tmp/install/configuration/install-centreon-module.php -b /usr/share/centreon/bootstrap.php -m centreon-autodiscovery-server"
+su apache -s /bin/bash -c "php /tmp/install/configuration/install-centreon-module.php -b /usr/share/centreon/bootstrap.php -m centreon-autodiscovery-server"
 # su apache -s /bin/bash -c 'php /tmp/install/configuration/install-centreon-module.php -b /usr/share/centreon/bootstrap.php -m centreon-bi-server'
 # su apache -s /bin/bash -c 'php /tmp/install/configuration/install-centreon-module.php -b /usr/share/centreon/bootstrap.php -m centreon-map4-web-client'
 # su apache -s /bin/bash -c 'php /tmp/install/configuration/install-centreon-module.php -b /usr/share/centreon/bootstrap.php -m centreon-bam-server'
@@ -54,6 +54,6 @@ sed -i "s/- 127.0.0.1\/32$/- 0.0.0.0\/0/"  /etc/centreon-gorgone/config.d/40-gor
 # chmod 775 /etc/centreon-broker
 # chmod 775 /etc/centreon/license.d/
 
-su apache -s /bin/bash -c "centreon -u $GORGONE_USR -p '$GORGONE_PWD' -a POLLERRESTART -v 1"
+su apache -s /bin/bash -c "centreon -u $GORGONE_USR -p '$GORGONE_PWD' -a APPLYCFG -v 1"
 
-rm -rf /usr/share/centreon/www/install
+mv /usr/share/centreon/www/install/ /var/lib/centreon/installs/install-$(date +%Y%m%d_%H%M%S)-$(shuf -i1-1000000 -n1)
