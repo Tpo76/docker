@@ -6,7 +6,7 @@ resources:
 - configMap/apache-config.yaml
 - configMap/php-config.yaml
 - configMap/global-config.yaml
-- configMap/mysql-secret.yaml
+- configMap/centreon-secret.yaml
 - configMap/smtp-config.yaml
 - configMap/maintenance-config.yaml
 - pvc/broker-pvc.yaml

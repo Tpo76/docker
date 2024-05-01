@@ -2,6 +2,8 @@ x-common-variables: &common-variables
   TZ: America/Toronto
   SMTP_ADDR: <SMTP_ADDR:PORT>
   MYSQL_ROOT_PASSWORD: centreon
+  VERSION: "23.10"
+  CENTREON_DB_PASSWORD: centreon
 
 volumes:
   centreon-share:

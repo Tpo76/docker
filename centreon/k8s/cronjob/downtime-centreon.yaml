@@ -4,6 +4,7 @@ metadata:
   name: downtime-centreon
 spec:
   schedule: "*/5 * * * *"
+  timeZone: America/Toronto
   jobTemplate:
     spec:
       template:
@@ -11,12 +12,12 @@ spec:
           containers:
           - name: downtime-centreon
             image: tpo76/cronbox:23.10.11
-            env:
-              - name: TZ
-                valueFrom:
-                  configMapKeyRef:
-                    name: global-config
-                    key: TZ
+            # env:
+            #   - name: TZ
+            #     valueFrom:
+            #       configMapKeyRef:
+            #         name: global-config
+            #         key: TZ
             command: ["/usr/bin/php", "-q", "/usr/share/centreon/cron/downtimeManager.php"]
             volumeMounts:
             - name: centreon-share

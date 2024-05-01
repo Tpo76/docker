@@ -1,10 +1,14 @@
 FROM docker.io/library/almalinux:8
 
+ARG TZ VERSION
+
+ENV TZ=${TZ} VERSION=${VERSION}
+
 
 RUN dnf update -y && \
     dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm && \
     dnf install -y dnf-plugins-core && \
-    dnf config-manager --add-repo https://packages.centreon.com/rpm-standard/23.10/el8/centreon-23.10.repo && \
+    dnf config-manager --add-repo https://packages.centreon.com/rpm-standard/${VERSION}/el8/centreon-${VERSION}.repo && \
     dnf install -y procps-ng gnutls lua supervisor inotify-tools rrdtool centreon-clib && \
     dnf download centreon-broker centreon-broker-core centreon-broker-cbd
     # dnf install -y centreon-broker centreon-broker-storage centreon-broker-core centreon-broker-cbd \
@@ -16,7 +20,8 @@ RUN groupadd -g 6000 centreon && \
     groupadd -g 6002 centreon-broker && \
     useradd -u 6002 -g centreon-broker -m -r -d /var/lib/centreon-broker -c "Centreon Broker"  -s /bin/bash centreon-broker && \
     groupadd -g 6003 centreon-gorgone && \
-    useradd -u 6003 -g centreon-gorgone -m -r -d /var/lib/centreon-gorgone -c "Centreon Gorgone"  -s /bin/bash centreon-gorgone
+    useradd -u 6003 -g centreon-gorgone -m -r -d /var/lib/centreon-gorgone -c "Centreon Gorgone"  -s /bin/bash centreon-gorgone && \
+    usermod -a -G centreon centreon-broker
 
 COPY supervisor /tmp/supervisord
 

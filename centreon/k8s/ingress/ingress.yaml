@@ -16,7 +16,7 @@ spec:
       port:
         number: 80
   rules:
-  - host: apache
+  - host: k8s.int.centreon.com
     http:
       paths:
       - path: /centreon
@@ -26,10 +26,10 @@ spec:
             name: apache
             port:
               number: 80
-      - path: /centreon/install/
-        pathType: Prefix
-        backend:
-          service:
-            name: maintenance
-            port:
-              number: 80
+      # - path: /centreon/install/
+      #   pathType: Prefix
+      #   backend:
+      #     service:
+      #       name: maintenance
+      #       port:
+      #         number: 80

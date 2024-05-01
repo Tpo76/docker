@@ -30,11 +30,21 @@ spec:
           image: tpo76/php-fpm:23.10.11
           resources: {}
           env:
-          - name: TZ
-            valueFrom:
-              configMapKeyRef:
-                name: global-config
-                key: TZ
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: centreon-secret
+                  key: password
+            - name: CENTREON_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: centreon-secret
+                  key: centreon_pwd
+            - name: TZ
+              valueFrom:
+                configMapKeyRef:
+                  name: global-config
+                  key: TZ
           ports:
             - containerPort: 9042
           volumeMounts:

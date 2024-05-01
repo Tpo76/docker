@@ -1,12 +1,12 @@
 FROM almalinux:8
 
-ARG TZ MYSQL_ROOT_PASSWORD
+ARG TZ MYSQL_ROOT_PASSWORD VERSION CENTREON_DB_PASSWORD
 
-ENV TZ=${TZ} MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+ENV TZ=${TZ} MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} VERSION=${VERSION} CENTREON_DB_PASSWORD=${CENTREON_DB_PASSWORD}
 
 RUN dnf update -y && \
     dnf install -y dnf-plugins-core && \
-    dnf config-manager --add-repo https://packages.centreon.com/rpm-standard/23.10/el8/centreon-23.10.repo && \
+    dnf config-manager --add-repo https://packages.centreon.com/rpm-standard/${VERSION}/el8/centreon-${VERSION}.repo && \
     dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm \
     https://rpms.remirepo.net/enterprise/remi-release-8.rpm && \
     dnf install -y mariadb && \

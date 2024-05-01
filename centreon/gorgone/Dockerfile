@@ -1,12 +1,12 @@
 FROM docker.io/library/almalinux:8
 
-ARG TZ SMTP_ADDR
+ARG TZ SMTP_ADDR VERSION
 
-ENV TZ=${TZ} SMTP_ADDR=${SMTP_ADDR}
+ENV TZ=${TZ} SMTP_ADDR=${SMTP_ADDR} VERSION=${VERSION}
 
 RUN dnf update -y && \
     dnf install -y dnf-plugins-core && \
-    dnf config-manager --add-repo https://packages.centreon.com/rpm-standard/23.10/el8/centreon-23.10.repo && \
+    dnf config-manager --add-repo https://packages.centreon.com/rpm-standard/${VERSION}/el8/centreon-${VERSION}.repo && \
     dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm && \
     dnf config-manager -y --set-enabled 'powertools'
    

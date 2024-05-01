@@ -1,11 +1,11 @@
 FROM docker.io/library/almalinux:8
 
-ARG TZ SMTP_ADDR
-ENV TZ=${TZ} SMTP_ADDR=${SMTP_ADDR}
+ARG TZ SMTP_ADDR VERSION
+ENV TZ=${TZ} SMTP_ADDR=${SMTP_ADDR} VERSION=${VERSION}
 
 RUN dnf update -y && \
     dnf install -y dnf-plugins-core && \
-    dnf config-manager --add-repo https://packages.centreon.com/rpm-standard/23.10/el8/centreon-23.10.repo && \
+    dnf config-manager --add-repo https://packages.centreon.com/rpm-standard/${VERSION}/el8/centreon-${VERSION}.repo && \
     dnf install -y dnf-plugins-core epel-release && \
     dnf config-manager --set-enabled powertools && \
     dnf install -y centreon-clib \
@@ -46,7 +46,8 @@ RUN groupadd -g 6000 centreon && \
     useradd -u 6002 -g centreon-broker -m -r -d /var/lib/centreon-broker -c "Centreon Broker"  -s /bin/bash centreon-broker && \
     groupadd -g 6003 centreon-gorgone && \
     useradd -u 6003 -g centreon-gorgone -m -r -d /var/lib/centreon-gorgone -c "Centreon Gorgone"  -s /bin/bash centreon-gorgone &&\
-    usermod -a -G nagios centreon-engine
+    usermod -a -G nagios centreon-engine && \
+    usermod -a -G centreon centreon-broker
 
 COPY supervisor /tmp/supervisord
 
