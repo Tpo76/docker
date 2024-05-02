@@ -11,7 +11,6 @@ RUN dnf update -y && \
     dnf config-manager --add-repo https://packages.centreon.com/rpm-standard/${VERSION}/el8/centreon-${VERSION}.repo && \
     dnf install -y procps-ng gnutls lua supervisor inotify-tools rrdtool centreon-clib && \
     dnf download centreon-broker centreon-broker-core centreon-broker-cbd
-    # dnf install -y centreon-broker centreon-broker-storage centreon-broker-core centreon-broker-cbd \
     
 RUN groupadd -g 6000 centreon && \
     useradd -u 6000 -g centreon -m -r -d /var/spool/centreon -c "Centreon" -s /bin/bash centreon && \

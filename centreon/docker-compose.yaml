@@ -56,7 +56,7 @@ services:
       context: broker
       args:
         <<: *common-variables
-    image: tpo76/broker:23.10
+    image: tpo76/broker:23.10.6
     container_name: cbd
     hostname: cbd
     restart: always
@@ -102,7 +102,7 @@ services:
       context: centengine
       args: 
         <<: *common-variables
-    image: tpo76/centengine:23.10
+    image: tpo76/centengine:23.10.6
     container_name: centengine
     hostname: centengine
     restart: always
@@ -142,7 +142,7 @@ services:
       context: gorgone
       args:
         <<: *common-variables
-    image: tpo76/gorgone:23.10
+    image: tpo76/gorgone:23.10.6
     container_name: gorgone
     hostname: gorgone
     restart: always
