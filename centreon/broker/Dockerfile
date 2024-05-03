@@ -20,7 +20,8 @@ RUN groupadd -g 6000 centreon && \
     useradd -u 6002 -g centreon-broker -m -r -d /var/lib/centreon-broker -c "Centreon Broker"  -s /bin/bash centreon-broker && \
     groupadd -g 6003 centreon-gorgone && \
     useradd -u 6003 -g centreon-gorgone -m -r -d /var/lib/centreon-gorgone -c "Centreon Gorgone"  -s /bin/bash centreon-gorgone && \
-    usermod -a -G centreon centreon-broker
+    usermod -a -G centreon centreon-broker && \
+    usermod -a -G centreon-broker centreon
 
 COPY supervisor /tmp/supervisord
 

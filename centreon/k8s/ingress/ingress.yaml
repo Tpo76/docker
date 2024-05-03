@@ -2,10 +2,9 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: apache-ingress
-  namespace: default
   annotations:
-    nginx.ingress.kubernetes.io/error-pages: |
-      503: /centreon/install/
+    kubernetes.io/ingress.class: nginx
+  namespace: default
   labels:
     app: centreon
 spec:
