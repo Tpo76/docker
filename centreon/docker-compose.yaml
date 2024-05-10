@@ -2,7 +2,7 @@ x-common-variables: &common-variables
   TZ: America/Toronto
   SMTP_ADDR: <SMTP_ADDR:PORT>
   MYSQL_ROOT_PASSWORD: centreon
-  VERSION: "23.10"
+  VERSION: "24.04"
   CENTREON_DB_PASSWORD: centreon
 
 volumes:
@@ -56,7 +56,7 @@ services:
       context: broker
       args:
         <<: *common-variables
-    image: tpo76/broker:23.10.6
+    image: tpo76/broker:24.04.0
     container_name: cbd
     hostname: cbd
     restart: always
