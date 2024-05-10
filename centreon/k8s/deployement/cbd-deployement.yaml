@@ -26,7 +26,8 @@ spec:
     spec:
       containers:
         - name: cbd
-          image: tpo76/broker:23.10
+          image: tpo76/broker:24.04.0
+          imagePullPolicy: Always
           resources: {}
           env:
           - name: TZ

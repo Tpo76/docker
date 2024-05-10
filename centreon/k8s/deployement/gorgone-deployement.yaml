@@ -26,7 +26,8 @@ spec:
     spec:
       containers:
         - name: gorgone
-          image: tpo76/gorgone:23.10
+          image: tpo76/gorgone:24.04.0
+          imagePullPolicy: Always
           resources: {}
           env:
           - name: TZ
@@ -34,6 +35,21 @@ spec:
               configMapKeyRef:
                 name: global-config
                 key: TZ
+          - name: https_proxy
+            valueFrom:
+              configMapKeyRef:
+                name: global-config
+                key: PROXY
+          - name: http_proxy
+            valueFrom:
+              configMapKeyRef:
+                name: global-config
+                key: PROXY
+          - name: no_proxy
+            valueFrom:
+              configMapKeyRef:
+                name: global-config
+                key: NO_PROXY
           ports:
             - containerPort: 8085
           volumeMounts:
