@@ -75,7 +75,7 @@ services:
       context: php
       args:
         <<: *common-variables
-    image: tpo76/php-fpm:23.10.11
+    image: tpo76/php-fpm:24.04.0
     container_name: php
     hostname: php
     restart: always
@@ -102,7 +102,7 @@ services:
       context: centengine
       args: 
         <<: *common-variables
-    image: tpo76/centengine:23.10.6
+    image: tpo76/centengine:24.04.0
     container_name: centengine
     hostname: centengine
     restart: always
@@ -124,7 +124,7 @@ services:
       context: http
       args:
         <<: *common-variables
-    image: tpo76/apache:23.10.11
+    image: tpo76/apache:24.04.0
     container_name: apache
     hostname: apache
     restart: always
@@ -142,7 +142,7 @@ services:
       context: gorgone
       args:
         <<: *common-variables
-    image: tpo76/gorgone:23.10.6
+    image: tpo76/gorgone:24.04.0
     container_name: gorgone
     hostname: gorgone
     restart: always
