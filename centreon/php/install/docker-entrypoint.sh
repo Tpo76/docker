@@ -27,25 +27,15 @@ if [ $EXEC = 0 ] &&  [ $RET != 0 ]; then
     else
         echo "Centreon version $RET already installed"
         echo "Centreon version $RPM_VERSION will be installed"
-        rpm -ivh --nodeps centreon-common*.rpm centreon-perl-libs*.rpm centreon-poller*.rpm centreon-web*.rpm centreon-widget*.rpm centreon-license-manager-common*.rpm centreon-license-manager*.rpm centreon-auto-discovery-server*.rpm centreon-pp-manager*.rpm
+        rpm -ivh --nodeps centreon-common*.rpm centreon-perl-libs*.rpm centreon-poller*.rpm centreon-web*.rpm centreon-license-manager-common*.rpm centreon-license-manager*.rpm centreon-auto-discovery-server*.rpm centreon-pp-manager*.rpm centreon-it-edition-extensions*.rpm
         echo "date.timezone =  ${TZ}" >> /etc/php.d/50-centreon.ini
-        cp /tmp/install/autoinstall.php /usr/share/centreon/autoinstall.php
-        cp -r /tmp/install/configuration/* /usr/share/centreon/www/install/tmp/
-        sleep 5
-        /tmp/install/update.sh
     fi
 else
-    rpm -ivh --nodeps centreon-common*.rpm centreon-perl-libs*.rpm centreon-poller*.rpm centreon-web*.rpm centreon-widget*.rpm centreon-license-manager-common*.rpm centreon-license-manager*.rpm centreon-auto-discovery-server*.rpm centreon-pp-manager*.rpm
+    rpm -ivh --nodeps centreon-common*.rpm centreon-perl-libs*.rpm centreon-poller*.rpm centreon-web*.rpm centreon-license-manager-common*.rpm centreon-license-manager*.rpm centreon-auto-discovery-server*.rpm centreon-pp-manager*.rpm centreon-it-edition-extensions*.rpm 
     echo "date.timezone =  ${TZ}" >> /etc/php.d/50-centreon.ini
-    python3 /tmp/install/update_json.py
-    cat /tmp/install/configuration/database.json
-    cp /tmp/install/autoinstall.php /usr/share/centreon/autoinstall.php
-    cp -r /tmp/install/configuration/* /usr/share/centreon/www/install/tmp/
-    sleep 5
-    /tmp/install/fresh.sh
 fi
 
-
+mkdir -p /usr/share/centreon/lib/centreon-broker
 su apache -s /bin/bash -c "touch /etc/centreon-engine/plugins.json"
 touch /var/log/centreon/centreon-web.log
 chown apache. /var/log/centreon/centreon-web.log
