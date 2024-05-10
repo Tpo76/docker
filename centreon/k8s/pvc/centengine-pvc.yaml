@@ -2,6 +2,21 @@
 # centengine-log
 # centengine-var
 apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: volume-centengine-etc
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 1Mi
+  volumeMode: Filesystem
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: local-storage
+  hostPath:
+    path: "/data/centengine-etc"
+---
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: centengine-etc
@@ -13,6 +28,21 @@ spec:
       storage: 1Mi
 ---
 apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: volume-centengine-log
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 150Mi
+  volumeMode: Filesystem
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: local-storage
+  hostPath:
+    path: "/data/centengine-log"
+---
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: centengine-log
@@ -22,6 +52,21 @@ spec:
   resources:
     requests:
       storage: 150Mi
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: volume-centengine-var
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 10Mi
+  volumeMode: Filesystem
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: local-storage
+  hostPath:
+    path: "/data/centengine-var"
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim

@@ -47,7 +47,7 @@ spec:
               configMapKeyRef:
                 name: global-config
                 key: NO_PROXY
-        volumesMounts:
+        volumeMounts:
           - name: centreon-etc
             mountPath: /etc/centreon
             readOnly: true
