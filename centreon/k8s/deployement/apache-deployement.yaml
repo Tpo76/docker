@@ -27,6 +27,7 @@ spec:
       containers:
         - name: apache
           image: tpo76/apache:23.10.11
+          imagePullPolicy: Always
           resources: {}
           env:
             - name: TZ

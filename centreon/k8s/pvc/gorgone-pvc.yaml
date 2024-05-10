@@ -11,7 +11,7 @@ spec:
   volumeMode: Filesystem
   accessModes:
     - ReadWriteMany
-  persistentVolumeReclaimPolicy: Recycle
+  persistentVolumeReclaimPolicy: Delete
   storageClassName: local-storage
   hostPath:
     path: "/data/gorgone-etc"
@@ -37,7 +37,7 @@ spec:
   volumeMode: Filesystem
   accessModes:
     - ReadWriteMany
-  persistentVolumeReclaimPolicy: Recycle
+  persistentVolumeReclaimPolicy: Delete
   storageClassName: local-storage
   hostPath:
     path: "/data/gorgone-cache"
@@ -63,7 +63,7 @@ spec:
   volumeMode: Filesystem
   accessModes:
     - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Recycle
+  persistentVolumeReclaimPolicy: Delete
   storageClassName: local-storage
   hostPath:
     path: "/data/gorgone-var"

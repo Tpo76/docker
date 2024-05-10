@@ -28,6 +28,7 @@ spec:
       containers:
         - name: php
           image: tpo76/php-fpm:23.10.11
+          imagePullPolicy: Always
           resources: {}
           env:
             - name: MYSQL_ROOT_PASSWORD
@@ -45,8 +46,26 @@ spec:
                 configMapKeyRef:
                   name: global-config
                   key: TZ
+            - name: https_proxy
+              valueFrom:
+                configMapKeyRef:
+                  name: global-config
+                  key: PROXY
+            - name: http_proxy
+              valueFrom:
+                configMapKeyRef:
+                  name: global-config
+                  key: PROXY
+            - name: no_proxy
+              valueFrom:
+                configMapKeyRef:
+                  name: global-config
+                  key: NO_PROXY
           ports:
             - containerPort: 9042
+          readinessProbe:
+            tcpSocket:
+              port: 9042
           volumeMounts:
             - name: php-config
               mountPath: /app/
@@ -76,6 +95,10 @@ spec:
               mountPath: /var/cache/centreon-gorgone
             - name: gorgone-etc
               mountPath: /etc/centreon-gorgone
+      hostAliases:
+        - ip: "172.16.5.223"
+          hostnames:
+            - "central.k8s.centreon.com"	
       volumes:
         - name: php-config
           configMap:

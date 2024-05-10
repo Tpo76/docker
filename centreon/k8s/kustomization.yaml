@@ -2,6 +2,7 @@ kind: Kustomization
 
 resources:
 - ingress/ingress.yaml
+- configMap/tls-secret.yaml
 - configMap/mariadb-config.yaml
 - configMap/apache-config.yaml
 - configMap/php-config.yaml
@@ -15,7 +16,7 @@ resources:
 - pvc/database-pvc.yaml
 - pvc/gorgone-pvc.yaml
 - deployement/apache-deployement.yaml
-- deployement/maintenance-deployement.yaml
+# - deployement/maintenance-deployement.yaml
 - deployement/cbd-deployement.yaml
 - deployement/centengine-deployement.yaml
 - deployement/database-deployement.yaml

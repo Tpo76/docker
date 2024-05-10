@@ -10,7 +10,7 @@ spec:
   volumeMode: Filesystem
   accessModes:
     - ReadWriteMany
-  persistentVolumeReclaimPolicy: Recycle
+  persistentVolumeReclaimPolicy: Delete
   storageClassName: local-storage
   hostPath:
     path: "/data/broker-etc"
@@ -36,7 +36,7 @@ spec:
   volumeMode: Filesystem
   accessModes:
     - ReadWriteMany
-  persistentVolumeReclaimPolicy: Recycle
+  persistentVolumeReclaimPolicy: Delete
   storageClassName: local-storage
   hostPath:
     path: "/data/broker-log"

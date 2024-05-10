@@ -14,7 +14,8 @@ spec:
     spec:
       containers:
         - name: centengine
-          image: tpo76/centengine:23.10
+          image: tpo76/centengine:23.10.6
+          imagePullPolicy: Always
           resources: {}
           env:
           - name: TZ
@@ -22,6 +23,21 @@ spec:
               configMapKeyRef:
                 name: global-config
                 key: TZ
+          - name: https_proxy
+            valueFrom:
+              configMapKeyRef:
+                name: global-config
+                key: PROXY
+          - name: http_proxy
+            valueFrom:
+              configMapKeyRef:
+                name: global-config
+                key: PROXY
+          - name: no_proxy
+            valueFrom:
+              configMapKeyRef:
+                name: global-config
+                key: NO_PROXY
           volumeMounts:
             - name: centreon-etc
               mountPath: /etc/centreon

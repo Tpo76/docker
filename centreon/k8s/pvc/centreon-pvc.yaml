@@ -17,7 +17,7 @@ spec:
   capacity:
     storage: 500Mi
   volumeMode: Filesystem
-  persistentVolumeReclaimPolicy: Recycle
+  persistentVolumeReclaimPolicy: Delete
   storageClassName: local-storage
   hostPath:
     path: "/data/centreon-share"
@@ -43,7 +43,7 @@ spec:
   capacity:
     storage: 20Mi
   volumeMode: Filesystem
-  persistentVolumeReclaimPolicy: Recycle
+  persistentVolumeReclaimPolicy: Delete
   storageClassName: local-storage
   hostPath:
     path: "/data/centreon-img"
@@ -69,7 +69,7 @@ spec:
   capacity:
     storage: 1Mi
   volumeMode: Filesystem
-  persistentVolumeReclaimPolicy: Recycle
+  persistentVolumeReclaimPolicy: Delete
   storageClassName: local-storage
   hostPath:
     path: "/data/centreon-etc"
@@ -96,7 +96,7 @@ spec:
   capacity:
     storage: 100Mi
   volumeMode: Filesystem
-  persistentVolumeReclaimPolicy: Recycle
+  persistentVolumeReclaimPolicy: Delete
   storageClassName: local-storage
   hostPath:
     path: "/data/centreon-var"
@@ -120,9 +120,9 @@ spec:
   accessModes:
     - ReadWriteMany
   capacity:
-    storage: 50Mi
+    storage: 100Mi
   volumeMode: Filesystem
-  persistentVolumeReclaimPolicy: Recycle
+  persistentVolumeReclaimPolicy: Delete
   storageClassName: local-storage
   hostPath:
     path: "/data/centreon-cache"
@@ -136,7 +136,7 @@ spec:
     - ReadWriteMany
   resources:
     requests:
-      storage: 50Mi
+      storage: 100Mi
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -148,7 +148,7 @@ spec:
   capacity:
     storage: 5Mi
   volumeMode: Filesystem
-  persistentVolumeReclaimPolicy: Recycle
+  persistentVolumeReclaimPolicy: Delete
   storageClassName: local-storage
   hostPath:
     path: "/data/centreon-bin"
@@ -174,7 +174,7 @@ spec:
   capacity:
     storage: 5Mi
   volumeMode: Filesystem
-  persistentVolumeReclaimPolicy: Recycle
+  persistentVolumeReclaimPolicy: Delete
   storageClassName: local-storage
   hostPath:
     path: "/data/centreon-centplugin"
@@ -200,7 +200,7 @@ spec:
   capacity:
     storage: 50Mi
   volumeMode: Filesystem
-  persistentVolumeReclaimPolicy: Recycle
+  persistentVolumeReclaimPolicy: Delete
   storageClassName: local-storage
   hostPath:
     path: "/data/centreon-pack"

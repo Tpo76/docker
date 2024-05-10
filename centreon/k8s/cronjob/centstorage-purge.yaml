@@ -4,6 +4,7 @@ metadata:
   name: centstorage-purge
 spec:
   schedule: "0 4 * * *"
+  timeZone: America/Toronto
   jobTemplate:
     spec:
       template:
@@ -11,12 +12,12 @@ spec:
           containers:
           - name: centstorage-purge
             image: tpo76/cronbox:23.10.11
-            # env:
-            #   - name: TZ
-            #     valueFrom:
-            #       configMapKeyRef:
-            #         name: global-config
-            #         key: TZ
+            env:
+              - name: TZ
+                valueFrom:
+                  configMapKeyRef:
+                    name: global-config
+                    key: TZ
             command: ["/usr/bin/php", "/usr/share/centreon/cron/centstorage_purge.php"]
             volumeMounts:
             - name: centreon-share
