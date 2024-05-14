@@ -1,0 +1,2 @@
+mda "procmail -d %T"
+hostname = <SMTPADDR:PORT>
