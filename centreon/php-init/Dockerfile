@@ -1,5 +1,8 @@
 FROM alpine:latest
 
+ARG MYSQL_ROOT_PASSWORD
+ENV MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+
 RUN apk add curl mysql-client python3 jq
 
 COPY install /tmp/install

@@ -40,6 +40,8 @@ volumes:
     name: centplugin
   centreon-pack:
     name: centreon-pack
+  database:
+    name: database
 
 networks:
   centreon_net:
@@ -67,9 +69,7 @@ services:
     volumes:
       - centreon-var:/var/lib/centreon:z,rw
       - broker-etc:/etc/centreon-broker:z,rw
-      - broker-log:/var/log/centreon-broker,rw
-    # depends_on:
-    #   - php
+      - broker-log:/var/log/centreon-broker:rw
   php-init:
     build:
       context: php-init
@@ -77,6 +77,13 @@ services:
         <<: *common-variables
     image: tpo76/php-init:24.04.0
     container_name: php-init
+    networks:
+      - centreon_net
+    volumes:
+      - centreon-etc:/etc/centreon/:z,ro
+      - gorgone-etc:/etc/centreon-gorgone:z,rw
+    depends_on: 
+      - php
   php:
     build:
       context: php
@@ -89,19 +96,19 @@ services:
     networks:
       - centreon_net
     volumes:
-      - centreon-etc:/etc/centreon/:z,rw
-      - centreon-share:/usr/share/centreon:z,rw
-      - centreon-img:/usr/share/centreon/www/img/media/:z,rw
-      - centreon-var:/var/lib/centreon:z,rw
-      - centreon-cache:/var/cache/centreon/:z,rw
+      - centreon-etc:/etc/centreon/:rw
+      - centreon-share:/usr/share/centreon:rw
+      - centreon-img:/usr/share/centreon/www/img/media/:rw
+      - centreon-var:/var/lib/centreon:rw
+      - centreon-cache:/var/cache/centreon/:rw
       - centreon-pack:/usr/share/centreon-packs/:rw
-      - centplugin:/var/lib/centreon/centplugins/:z,rw
+      - centplugin:/var/lib/centreon/centplugins/:rw
+      - broker-log:/var/log/centreon-broker:ro
+      - centengine-etc:/etc/centreon-engine:z,rw
       - broker-etc:/etc/centreon-broker:z,rw
-      - broker-log:/var/log/centreon-broker:z,ro
-      - centengine-etc:/etc/centreon-engine/:z,rw
       - centreon-bin:/usr/local/share/applications/:z,ro
-      - gorgone-cache:/var/cache/centreon-gorgone:z,ro
-      - gorgone-etc:/etc/centreon-gorgone:z,rw
+      - gorgone-cache:/var/cache/centreon-gorgone:ro
+      - gorgone-etc:/etc/centreon-gorgone:rw
     depends_on:
       - database
   centengine:
@@ -116,14 +123,14 @@ services:
     networks:
       - centreon_net
     volumes:
-      - centreon-etc:/etc/centreon/:z,rw
-      - centengine-etc:/etc/centreon-engine/:z,rw
-      - centplugin:/var/lib/centreon/centplugins/:z,rw
+      - centreon-etc:/etc/centreon/:ro
+      - centengine-etc:/etc/centreon-engine:z,rw
+      - centplugin:/var/lib/centreon/centplugins/:rw
       - broker-etc:/etc/centreon-broker:z,rw
-      - centengine-log:/var/log/centreon-engine/:z,rw
-      - centengine-var:/var/lib/centreon-engine/:z,rw
+      - centengine-log:/var/log/centreon-engine/:rw
+      - centengine-var:/var/lib/centreon-engine/:rw
       - centreon-bin:/usr/local/share/applications/:z,rw
-      - centreon-cache:/var/cache/centreon/:z,rw
+      - centreon-cache:/var/cache/centreon/:rw
     depends_on:
       - php
   apache:
@@ -140,8 +147,8 @@ services:
     ports:
       - 80:80
     volumes:
-      - centreon-share:/usr/share/centreon:z,ro
-      - centreon-img:/usr/share/centreon/www/img/media/:z,rw
+      - centreon-share:/usr/share/centreon:ro
+      - centreon-img:/usr/share/centreon/www/img/media/:rw
     depends_on:
       - php
   gorgone:
@@ -156,17 +163,32 @@ services:
     networks:
       - centreon_net
     volumes:
-      - centreon-etc:/etc/centreon:z,ro
-      - centreon-var:/var/lib/centreon:z,rw
-      - centreon-cache:/var/cache/centreon/:z,rw
+      - centreon-etc:/etc/centreon:z,rw
+      - centreon-var:/var/lib/centreon:rw
+      - centreon-cache:/var/cache/centreon/:rw
       - centreon-bin:/usr/local/share/applications/:z,rw
-      - centengine-etc:/etc/centreon-engine/:z,rw
+      - centengine-etc:/etc/centreon-engine:z,rw
+      - centengine-log:/var/log/centreon-engine/:ro
       - broker-etc:/etc/centreon-broker:z,rw
-      - centengine-log:/var/log/centreon-engine/:z,ro
-      - gorgone-etc:/etc/centreon-gorgone:z,rw
-      - gorgone-cache:/var/cache/centreon-gorgone:z,rw
-      - gorgone-var:/var/lib/centreon-gorgone/:z,rw
-      - centengine-var:/var/lib/centreon-engine/:z,rw
+      - gorgone-etc:/etc/centreon-gorgone:rw
+      - gorgone-cache:/var/cache/centreon-gorgone:rw
+      - gorgone-var:/var/lib/centreon-gorgone/:rw
+      - centengine-var:/var/lib/centreon-engine/:rw
+  cronbox:
+    build:
+      context: cronbox
+      args:
+        <<: *common-variables
+    image: tpo76/cronbox:24.04.0
+    # command: sleep 3600
+    container_name: cronbox
+    hostname: cronbox
+    restart: always
+    networks:
+      - centreon_net
+    volumes:
+      - centreon-etc:/etc/centreon:ro
+      - gorgone-etc:/etc/centreon-gorgone:rw
     depends_on:
       - php
   database:
@@ -179,4 +201,4 @@ services:
     networks:
       - centreon_net
     volumes:
-      - ./database:/var/lib/mysql
+      - database:/var/lib/mysql

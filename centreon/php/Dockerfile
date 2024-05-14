@@ -39,7 +39,7 @@ RUN dnf update -y && \
 ### Pack installation can be comment if not needed
 RUN dnf config-manager --add-repo https://packages.centreon.com/rpm-connectors/2e83f5ff110c44a9cab8f8c7ebbe3c4f/el8/centreon-connectors.repo
 
-COPY install /tmp/install/
+COPY install /usr/local/bin/
 COPY app/ /app
 
 RUN groupadd -g 6000 centreon && \
@@ -55,15 +55,17 @@ RUN groupadd -g 6000 centreon && \
 RUN mkdir /run/php-fpm/ && \
     ln -nsf /app/supervisord.conf /etc/supervisord.d/supervisord.conf && \
     ln -nsf /app/centreon.conf /etc/php-fpm.d/centreon.conf && \
-    cp /tmp/install/config-reloader.sh /usr/local/bin/ && \
-    cp /tmp/install/docker-entrypoint.sh /usr/local/bin/ && \
+    # cp /tmp/install/config-reloader.sh /usr/local/bin/ && \
+    # cp /tmp/install/docker-entrypoint.sh /usr/local/bin/ && \
     ln -nsf /usr/local/share/applications/centengine /usr/sbin/ && \
     mkdir -p /var/log/centreon/symfony /etc/centreon-broker && \
     chown -R apache. /var/log/centreon/symfony && \
-    chmod +x /tmp/install/*.sh /usr/local/bin/docker-entrypoint.sh && \
-    ln -s /usr/local/bin/docker-entrypoint.sh && \
+    chmod +x /usr/local/bin/*.sh && \
     touch /usr/sbin/centenginestats /usr/lib64/nagios/cbmod.so && \
     mkdir -p /usr/lib64/centreon-connector /usr/lib64/centreon-engine /usr/lib/centreon/plugins/
+
+# RUN ls -lrh /usr/local/bin/docker-entrypoint.sh && \
+#     sleep 1d
 
 RUN dnf clean all && \
     rm -rf /var/cache/dnf
