@@ -1,16 +1,16 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: build-reporting
+  name: outdated-token
 spec:
-  schedule: "30 8 * * *"
+  schedule: "0 * * * *"
   timeZone: America/Toronto
   jobTemplate:
     spec:
       template:
         spec:
           containers:
-          - name: build-reporting
+          - name: outdated-token
             image: tpo76/cronbox:23.10.11
             env:
               - name: TZ
@@ -18,7 +18,7 @@ spec:
                   configMapKeyRef:
                     name: global-config
                     key: TZ
-            command: ["/usr/share/centreon/cron/dashboardBuilder", "--config=/etc/centreon/conf.pm"]
+            command: ["/usr/share/centreon/cron/outdated-token-removal.php"]
             volumeMounts:
             - name: centreon-share
               mountPath: /usr/share/centreon
@@ -26,6 +26,7 @@ spec:
               mountPath: /etc/centreon
             # Add other volume mounts as needed
           restartPolicy: OnFailure
+          # serviceAccountName: centreon-user
           volumes:
           - name: centreon-share
             persistentVolumeClaim:
@@ -35,5 +36,4 @@ spec:
             persistentVolumeClaim:
               claimName: centreon-etc
               readOnly: true
-          # serviceAccountName: centreon-user
       backoffLimit: 3

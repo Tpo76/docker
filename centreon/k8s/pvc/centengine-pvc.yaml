@@ -78,3 +78,29 @@ spec:
   resources:
     requests:
       storage: 10Mi
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: volume-centengine-plugins
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 400Mi
+  volumeMode: Filesystem
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: local-storage
+  hostPath:
+    path: "/data/centengine-plugins"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: centengine-plugins
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 400Mi

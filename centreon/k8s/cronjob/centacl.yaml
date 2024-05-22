@@ -4,7 +4,7 @@ metadata:
   name: centacl
 spec:
   schedule: "* * * * *"
-  failedJobsHistoryLimit: 3
+  timeZone: America/Toronto
   jobTemplate:
     spec:
       template:

@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
         - name: php
-          image: tpo76/php-fpm:23.10.11
+          image: tpo76/php-fpm:24.04.0
           imagePullPolicy: Always
           resources: {}
           env:

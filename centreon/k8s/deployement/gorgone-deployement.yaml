@@ -61,6 +61,8 @@ spec:
               mountPath: /var/cache/centreon
             - name: centreon-bin
               mountPath: /usr/local/share/applications
+            - name: centengine-plugins
+              mountPath: /usr/lib/centreon/plugins
             - name: centengine-etc
               mountPath: /etc/centreon-engine
             - name: broker-etc
@@ -91,6 +93,9 @@ spec:
         - name: centengine-etc
           persistentVolumeClaim:
             claimName: centengine-etc
+        - name: centengine-plugins
+          persistentVolumeClaim:
+            claimName: centengine-plugins
         - name: broker-etc
           persistentVolumeClaim:
             claimName: broker-etc
