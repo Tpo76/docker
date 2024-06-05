@@ -14,7 +14,7 @@ resources:
 - pvc/centreon-pvc.yaml
 - pvc/database-pvc.yaml
 - pvc/gorgone-pvc.yaml
-- deployement/apache-deployement.yaml
+# - deployement/apache-deployement.yaml
 - deployement/maintenance-deployement.yaml
 - deployement/cbd-deployement.yaml
 - deployement/centengine-deployement.yaml

@@ -21,6 +21,10 @@ spec:
           image: tpo76/centengine:24.04.0
           imagePullPolicy: Always
           resources: {}
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/bin/sh", "-c", "supervisorctl stop centengine"]
           env:
           - name: TZ
             valueFrom:

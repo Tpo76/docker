@@ -50,7 +50,12 @@ RUN groupadd -g 6000 centreon && \
     useradd -u 6002 -g centreon-broker -m -r -d /var/lib/centreon-broker -c "Centreon Broker"  -s /bin/bash centreon-broker && \
     groupadd -g 6003 centreon-gorgone && \
     useradd -u 6003 -g centreon-gorgone -m -r -d /var/lib/centreon-gorgone -c "Centreon Gorgone"  -s /bin/bash centreon-gorgone && \
-    usermod -aG centreon apache
+    usermod -aG centreon-gorgone,centreon,centreon-broker apache && \
+    usermod -aG centreon-engine,centreon-broker,apache nagios && \
+    usermod -aG apache,nagios,centreon-broker,centreon-gorgone,centreon centreon-engine && \
+    usermod -aG centreon-engine,nagios,centreon-gorgone,apache,centreon centreon-broker && \
+    usermod -aG centreon-engine,centreon-broker,apache,centreon centreon-gorgone && \
+    usermod -aG centreon-gorgone,centreon-engine,centreon-broker,apache centreon
 
 RUN mkdir /run/php-fpm/ && \
     ln -nsf /app/supervisord.conf /etc/supervisord.d/supervisord.conf && \

@@ -4,3 +4,5 @@ metadata:
   name: global-config
 data:
   TZ: America/Toronto
+  PROXY: ""
+  NO_PROXY: ""

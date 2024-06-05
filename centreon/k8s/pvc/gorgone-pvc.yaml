@@ -1,78 +1,81 @@
 # gorgone-etc
 # gorgone-cache
 # gorgone-var
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: volume-gorgone-etc
-spec:
-  capacity:
-    storage: 1Mi
-  volumeMode: Filesystem
-  accessModes:
-    - ReadWriteMany
-  persistentVolumeReclaimPolicy: Delete
-  storageClassName: local-storage
-  hostPath:
-    path: "/data/gorgone-etc"
----
+# apiVersion: v1
+# kind: PersistentVolume
+# metadata:
+#   name: volume-gorgone-etc
+# spec:
+#   capacity:
+#     storage: 1Mi
+#   volumeMode: Filesystem
+#   accessModes:
+#     - ReadWriteMany
+#   persistentVolumeReclaimPolicy: Delete
+#   storageClassName: standard
+#   hostPath:
+#     path: "/data/gorgone-etc"
+# ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: gorgone-etc
 spec:
+  storageClassName: standard
   accessModes:
     - ReadWriteMany
   resources:
     requests:
       storage: 1Mi
 ---
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: volume-gorgone-cache
-spec:
-  capacity:
-    storage: 10Mi
-  volumeMode: Filesystem
-  accessModes:
-    - ReadWriteMany
-  persistentVolumeReclaimPolicy: Delete
-  storageClassName: local-storage
-  hostPath:
-    path: "/data/gorgone-cache"
----
+# apiVersion: v1
+# kind: PersistentVolume
+# metadata:
+#   name: volume-gorgone-cache
+# spec:
+#   capacity:
+#     storage: 10Mi
+#   volumeMode: Filesystem
+#   accessModes:
+#     - ReadWriteMany
+#   persistentVolumeReclaimPolicy: Delete
+#   storageClassName: standard
+#   hostPath:
+#     path: "/data/gorgone-cache"
+# ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: gorgone-cache
 spec:
+  storageClassName: standard
   accessModes:
     - ReadWriteMany
   resources:
     requests:
       storage: 10Mi
 ---
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: volume-gorgone-var
-spec:
-  capacity:
-    storage: 200Mi
-  volumeMode: Filesystem
-  accessModes:
-    - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Delete
-  storageClassName: local-storage
-  hostPath:
-    path: "/data/gorgone-var"
----
+# apiVersion: v1
+# kind: PersistentVolume
+# metadata:
+#   name: volume-gorgone-var
+# spec:
+#   capacity:
+#     storage: 200Mi
+#   volumeMode: Filesystem
+#   accessModes:
+#     - ReadWriteOnce
+#   persistentVolumeReclaimPolicy: Delete
+#   storageClassName: standard
+#   hostPath:
+#     path: "/data/gorgone-var"
+# ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: gorgone-var
 spec:
+  storageClassName: standard
   accessModes:
     - ReadWriteOnce
   resources:

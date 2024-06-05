@@ -1,51 +1,53 @@
 # broker-etc
 # broker-log
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: volume-broker-etc
-spec:
-  capacity:
-    storage: 1Mi
-  volumeMode: Filesystem
-  accessModes:
-    - ReadWriteMany
-  persistentVolumeReclaimPolicy: Delete
-  storageClassName: local-storage
-  hostPath:
-    path: "/data/broker-etc"
----
+# apiVersion: v1
+# kind: PersistentVolume
+# metadata:
+#   name: volume-broker-etc
+# spec:
+#   capacity:
+#     storage: 1Mi
+#   volumeMode: Filesystem
+#   accessModes:
+#     - ReadWriteMany
+#   persistentVolumeReclaimPolicy: Delete
+#   storageClassName: standard
+#   hostPath:
+#     path: "/data/broker-etc"
+# ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: broker-etc
 spec:
+  storageClassName: standard
   accessModes:
     - ReadWriteMany
   resources:
     requests:
       storage: 1Mi
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: volume-broker-log
-spec:
-  capacity:
-    storage: 10Mi
-  volumeMode: Filesystem
-  accessModes:
-    - ReadWriteMany
-  persistentVolumeReclaimPolicy: Delete
-  storageClassName: local-storage
-  hostPath:
-    path: "/data/broker-log"
+# ---
+# apiVersion: v1
+# kind: PersistentVolume
+# metadata:
+#   name: volume-broker-log
+# spec:
+#   capacity:
+#     storage: 10Mi
+#   volumeMode: Filesystem
+#   accessModes:
+#     - ReadWriteMany
+#   persistentVolumeReclaimPolicy: Delete
+#   storageClassName: standard
+#   hostPath:
+#     path: "/data/broker-log"
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: broker-log
 spec:
+  storageClassName: standard
   accessModes:
     - ReadWriteMany
   resources:
