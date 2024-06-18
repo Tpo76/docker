@@ -12,6 +12,10 @@ spec:
       labels:
         app: centengine
     spec:
+      hostAliases:
+        - ip: "172.16.5.223"
+          hostnames:
+            - "central.k8s.centreon.com"
       containers:
         - name: centengine
           image: tpo76/centengine:23.10.6
@@ -39,6 +43,8 @@ spec:
                 name: global-config
                 key: NO_PROXY
           volumeMounts:
+            - name: smtp-config
+              mountPath: /app/
             - name: centreon-etc
               mountPath: /etc/centreon
             - name: centengine-etc
@@ -47,6 +53,8 @@ spec:
               mountPath: /var/lib/centreon/centplugins
             - name: broker-etc
               mountPath: /etc/centreon-broker
+            - name: centengine-plugins
+              mountPath: /usr/lib/centreon/plugins
             - name: centengine-log
               mountPath: /var/log/centreon-engine
             - name: centengine-var
@@ -56,6 +64,9 @@ spec:
             - name: centreon-cache
               mountPath: /var/cache/centreon
       volumes:
+        - name: smtp-config
+          configMap:
+            name: smtp-config
         - name: centreon-etc
           persistentVolumeClaim:
             claimName: centreon-etc
@@ -68,6 +79,9 @@ spec:
         - name: broker-etc
           persistentVolumeClaim:
             claimName: broker-etc
+        - name: centengine-plugins
+          persistentVolumeClaim:
+            claimName: centengine-plugins
         - name: centengine-log
           persistentVolumeClaim:
             claimName: centengine-log

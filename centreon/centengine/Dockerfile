@@ -49,6 +49,7 @@ RUN groupadd -g 6000 centreon && \
     usermod -a -G nagios centreon-engine
 
 COPY supervisor /tmp/supervisord
+COPY smtp /app
 
 RUN cp /tmp/supervisord/supervisord.conf /etc/supervisord.d/supervisord.conf && \
     cp /tmp/supervisord/config-reloader.sh /usr/local/bin/config-reloader.sh && \
@@ -56,6 +57,7 @@ RUN cp /tmp/supervisord/supervisord.conf /etc/supervisord.d/supervisord.conf && 
     cp /tmp/supervisord/docker-entrypoint.sh /usr/local/bin/ && \
     cp /tmp/supervisord/sudo-centreon-gorgone /etc/sudoers.d/centreon-gorgone && \
     chmod +x /usr/local/bin/config-reloader.sh /usr/local/bin/docker-entrypoint.sh /usr/local/bin/plugin-install.sh && \
+    ln -nsf /app/esmtprc /etc/esmtprc && \
     ln -nsf /usr/local/share/applications/gorgone_install_plugins.pl /usr/local/bin/ &&\
     ln -s /usr/local/bin/docker-entrypoint.sh
 

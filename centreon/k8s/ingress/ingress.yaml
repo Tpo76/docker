@@ -17,11 +17,6 @@ spec:
     - central.k8s.centreon.com
     secretName: tls-secret
   ingressClassName: nginx
-  # defaultBackend:
-  #   service:
-  #     name: apache
-  #     port:
-  #       number: 80
   rules:
   - host: central.k8s.centreon.com
     http:
@@ -33,17 +28,3 @@ spec:
             name: apache
             port:
               number: 80
-      # - path: /centreon
-      #   pathType: Prefix
-      #   backend:
-      #     service:
-      #       name: apache
-      #       port:
-      #         number: 80
-      # - path: /centreon/install/
-      #   pathType: Prefix
-      #   backend:
-      #     service:
-      #       name: maintenance
-      #       port:
-      #         number: 80

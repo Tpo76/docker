@@ -4,5 +4,5 @@ metadata:
   name: global-config
 data:
   TZ: America/Toronto
-  PROXY: http://10.0.0.133:3128
-  NO_PROXY: localhost,127.0.0.0/8,172.16.0.0/16,10.96.0.0/12,192.168.0.0/16,central.k8s.centreon.com,apache,gorgone
+  PROXY: <IF_NEED>
+  NO_PROXY: <IF_NEED>

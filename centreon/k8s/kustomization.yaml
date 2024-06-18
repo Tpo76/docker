@@ -28,3 +28,4 @@ resources:
 - cronjob/build-reporting.yaml
 - cronjob/centreon-partitioning.yaml
 - cronjob/centstorage-purge.yaml
+- cronjob/outdated-token.yaml

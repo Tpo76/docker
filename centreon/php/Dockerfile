@@ -14,6 +14,7 @@ RUN dnf update -y && \
     dnf module reset php -y --nogpgcheck && \
     dnf module install php:remi-8.1 -y --nogpgcheck && \
     dnf install -y supervisor \
+    jq \
     inotify-tools \
     nagios-common \
     bind-utils \
@@ -33,12 +34,12 @@ RUN dnf update -y && \
     perl-HTML-Parser \
     curl \
     php-cli php-common php-curl php-fpm php-gd php-intl php-json php-ldap php-mbstring php-mysqlnd php-pdo php-pear php-snmp php-xml php-zip rrdtool rrdtool-perl rsync systemd php-sourceguardian-loader php-pecl-gnupg &&\
-    dnf download centreon-perl-libs centreon-web centreon-common centreon-poller centreon-widget\* centreon-license-manager-common centreon-auto-discovery-server centreon-license-manager centreon-pp-manager
+    dnf download centreon-perl-libs centreon-web centreon-common centreon-poller centreon-license-manager-common centreon-auto-discovery-server centreon-license-manager centreon-pp-manager centreon-it-edition-extensions
 
 ### Pack installation can be comment if not needed
 RUN dnf config-manager --add-repo https://packages.centreon.com/rpm-connectors/2e83f5ff110c44a9cab8f8c7ebbe3c4f/el8/centreon-connectors.repo
 
-COPY install /tmp/install/
+COPY install /usr/local/bin/
 COPY app/ /app
 
 RUN groupadd -g 6000 centreon && \
@@ -54,13 +55,17 @@ RUN groupadd -g 6000 centreon && \
 RUN mkdir /run/php-fpm/ && \
     ln -nsf /app/supervisord.conf /etc/supervisord.d/supervisord.conf && \
     ln -nsf /app/centreon.conf /etc/php-fpm.d/centreon.conf && \
-    cp /tmp/install/config-reloader.sh /usr/local/bin/ && \
-    cp /tmp/install/docker-entrypoint.sh /usr/local/bin/ && \
+    # cp /tmp/install/config-reloader.sh /usr/local/bin/ && \
+    # cp /tmp/install/docker-entrypoint.sh /usr/local/bin/ && \
     ln -nsf /usr/local/share/applications/centengine /usr/sbin/ && \
     mkdir -p /var/log/centreon/symfony /etc/centreon-broker && \
     chown -R apache. /var/log/centreon/symfony && \
-    chmod +x /tmp/install/*.sh /usr/local/bin/docker-entrypoint.sh && \
-    ln -s /usr/local/bin/docker-entrypoint.sh
+    chmod +x /usr/local/bin/*.sh && \
+    touch /usr/sbin/centenginestats /usr/lib64/nagios/cbmod.so && \
+    mkdir -p /usr/lib64/centreon-connector /usr/lib64/centreon-engine /usr/lib/centreon/plugins/
+
+# RUN ls -lrh /usr/local/bin/docker-entrypoint.sh && \
+#     sleep 1d
 
 RUN dnf clean all && \
     rm -rf /var/cache/dnf

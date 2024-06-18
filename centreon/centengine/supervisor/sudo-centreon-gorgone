@@ -2,5 +2,6 @@
 
 User_Alias      GORGONE=centreon-gorgone
 Defaults:GORGONE !requiretty
+Defaults:GORGONE env_keep += "http_proxy https_proxy no_proxy"
 
 GORGONE ALL = NOPASSWD: /usr/local/bin/gorgone_install_plugins.pl

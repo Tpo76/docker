@@ -5,6 +5,8 @@ set -x
 echo -e "mda \"procmail -d %T\"\nhostname = ${SMTP_ADDR}" > /etc/esmtpr
 
 rpm -ivh --nodeps centreon-gorgone-centreon-config*.rpm centreon-common*.rpm centreon-gorgone*.rpm
+sed -i '/^Defaults:GORGONE !requiretty/ a Defaults:GORGONE env_keep += "http_proxy https_proxy no_proxy"' /etc/sudoers.d/centreon-gorgone
+
 
 cp /usr/local/bin/gorgone_install_plugins.pl /usr/local/share/applications/
 

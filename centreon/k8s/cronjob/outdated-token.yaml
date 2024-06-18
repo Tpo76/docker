@@ -1,16 +1,16 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: centacl
+  name: outdated-token
 spec:
-  schedule: "* * * * *"
+  schedule: "0 * * * *"
   timeZone: America/Toronto
   jobTemplate:
     spec:
       template:
         spec:
           containers:
-          - name: centacl
+          - name: outdated-token
             image: tpo76/cronbox:23.10.11
             env:
               - name: TZ
@@ -18,10 +18,10 @@ spec:
                   configMapKeyRef:
                     name: global-config
                     key: TZ
-            command: ["/usr/bin/php", "-q", "/usr/share/centreon/cron/centAcl.php"]
+            command: ["/usr/share/centreon/cron/outdated-token-removal.php"]
             volumeMounts:
             - name: centreon-share
-              mountPath: /usr/share/centreon/
+              mountPath: /usr/share/centreon
             - name: centreon-etc
               mountPath: /etc/centreon
             # Add other volume mounts as needed

@@ -13,14 +13,18 @@ RUN dnf install -y https://rpms.remirepo.net/enterprise/remi-release-8.rpm -y &&
     procps-ng \
     perl \
     perl-DBI \
-    perl-DBD-MySQL && \
+    perl-DBD-MySQL\
+    cronie && \
     dnf download centreon-perl-libs && \
     rpm -ivh --nodeps *.rpm
 
-RUN echo "date.timezone = ${TZ}" > /etc/php.d/00-timezone.ini
+COPY cron.d /etc/cron.d/
+
+RUN echo "date.timezone = ${TZ}" > /etc/php.d/00-timezone.ini && \
+    sed -i 's/my \$pid = defined(\$data->{pid}) ? \$data->{pid} : -1;/my \$pid = -1;/g' /usr/share/perl5/vendor_perl/centreon/common/lock.pm
 
 RUN dnf clean all && \
     rm -rf /var/cache/dnf \
     rm *.rpm -f
 
-CMD ["/usr/bin/bash"]
+CMD ["/usr/sbin/crond", "-n"]
