@@ -1,0 +1,88 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: snmpsim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: snmpsim
+  namespace: snmpsim
+spec: 
+  selector:
+    app: snmpsim
+  ports:
+    - protocol: UDP
+      port: 161
+      targetPort: 161
+  type: LoadBalancer
+  externalIPs:
+    - 172.16.5.223
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: snmpsim
+  namespace: snmpsim
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: snmpsim
+  template:
+    metadata:
+      labels:
+        app: snmpsim
+    spec:
+      containers:
+      - name: snmpsim
+        image: tandrup/snmpsim:latest
+        imagePullPolicy: Always
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "500m"
+          limits:
+            memory: "256Mi"
+            cpu: "1000m"
+        ports:
+        - containerPort: 161
+          protocol: UDP
+        volumeMounts:
+        - name: snmpsim-data
+          mountPath: /usr/local/snmpsim/data
+      volumes:
+      - name: snmpsim-data
+        persistentVolumeClaim:
+          claimName: snmpsim-data
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-snmpsim-data
+  namespace: snmpsim
+spec:
+  capacity:
+    storage: 500Mi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage
+  hostPath:
+    path: "/data/snmpsim-data"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: snmpsim-data
+  namespace: snmpsim
+spec:
+  resources:
+    requests:
+      storage: 500Mi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+
+
