@@ -18,7 +18,7 @@ spec:
             - "central.k8s.centreon.com"
       containers:
         - name: centengine
-          image: tpo76/centengine:24.04.0
+          image: tpo76/centengine:23.10.6
           imagePullPolicy: Always
           resources: {}
           env:

@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: build-event
 spec:
-  schedule: "0 8 * * *"
+  schedule: "0 3 * * *"
   timeZone: America/Toronto
   jobTemplate:
     spec:
